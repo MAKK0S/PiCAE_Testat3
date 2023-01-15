@@ -39,6 +39,7 @@ C-----Anzahl a der Parameter bestimmen
       real b=props(a)
       write (*,*) b,props(1000)
       do while (b/=zero)
+          b=props(a)
           props(a)
           a++
       enddo 
@@ -58,11 +59,13 @@ c-----Materialparameter aus props einlesen
 c
 c-----viskoelastischer Schritt
 c-----Zuweisen der Materialparamter
+c-----Schleife
       G0=E(0)/(two*(one+nu(0))); k0=E(0)/(three*(one-two*nu(0)))
 
       G=G0-G0*gi
       k=k0-k0*ki
 c-----elastische Steifigkeitsmatrix
+c-----Schleife?
       f0=zero
       do i=1,3
         do j=1,3
@@ -88,6 +91,7 @@ c-----Komponenten der Steifigkeitsmatrix für jedes Prony-Element
       end do
 c
 c-----Berechnung des elastischen Spannungsanteils
+c-----Schleife (bis a/5)
       stressE=zero
       do i=1,3
         stressE(i)=statev(i)
@@ -115,6 +119,7 @@ c
         stressm(j)=stressm(j)+f(j,j)*dstran(j)/dtime*expTerm
       end do
 c-----Berechnung der Gesamtspannung am Ende des Inkrementes
+c-----schleife (schauen wie lange schleife laufen muss)
       stress=zero
       do i=1,6
         stress(i)=stressE(i)+stressm(i)
