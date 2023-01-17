@@ -41,7 +41,7 @@ C-----Anzahl a der Parameter bestimmen
       do while (b/=zero)
           b=props(a)
           props(a)
-          a++
+          a=a+1
       enddo 
 
 c-----Überprüfen ob Rest a/5 zero
