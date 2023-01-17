@@ -40,11 +40,16 @@ C-----Anzahl a der Parameter bestimmen
       write (*,*) b,props(1000)
       do while (b/=zero)
           b=props(a)
-          props(a)
           a++
       enddo 
 
 c-----Überprüfen ob Rest a/5 zero
+      if (MOD(a, 5) == 0) then
+           print *, "a is divisible by 5"
+      else
+           print *, "a is not divisible by 5"
+      end if
+
       
 c-----Deklaration für Prony-Reihe
       real E(a/5),nu(a/5),gi(a/5),taui(a/5),ki(a/5)
@@ -93,7 +98,7 @@ c
 c-----Berechnung des elastischen Spannungsanteils
 c-----Schleife (bis a/5)
       stressE=zero
-      do i=1,3
+      do i=1,a/5
         stressE(i)=statev(i)
         do j=1,3
           stressE(i)=stressE(i)+f0(i,j)*dstran(j)
