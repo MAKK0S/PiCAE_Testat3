@@ -48,15 +48,12 @@ c-----Zuweisen der Materialparamter
       k=k0-k0*ki
 c-----elastische Steifigkeitsmatrix
       f0=zero
-      do i=1,3
-        do j=1,3
-          f0(i,j)=k-two/three*G
-        end do
-        f0(i,i)=k+four/three*G
+      do i=1,2
+       f0(i,i)= four*G*(G+three*k)/(four*G+three*k)
       end do
-      do i=4,6
-        f0(i,i)=G
-      end do
+      f0(2,1)= -two*G*(two*G-three*k)/(four*G+three*k)
+      f0(1,2)=f0(2,1)
+      f0(3,3)=G
       km=zero;Gm=zero;f=zero
       Gm=gi*G0
       km=ki*k0
@@ -79,9 +76,7 @@ c-----Berechnung des elastischen Spannungsanteils
           stressE(i)=stressE(i)+f0(i,j)*dstran(j)
         end do
       end do
-      do j=4,ntens
-        stressE(j)=statev(j)+f0(j,j)*dstran(j)
-      end do
+    
 c-----Relaxieren der Spannung
       stressm=zero
       do j=1,ntens
@@ -95,12 +90,10 @@ c
           stressm(i)=stressm(i)+f(i,j)*dstran(j)/dtime*expTerm
         end do
       end do
-      do j=4,ntens
-        stressm(j)=stressm(j)+f(j,j)*dstran(j)/dtime*expTerm
-      end do
+     
 c-----Berechnung der Gesamtspannung am Ende des Inkrementes
       stress=zero
-      do i=1,6
+      do i=1,3
         stress(i)=stressE(i)+stressm(i)
       end do
 c
@@ -108,7 +101,7 @@ c-----Jacobi-Matrix
       ddsdde=zero
       ddsdde(1,1)=(k+four/three*G)
       ddsdde(1,2)=(k-two/three*G)
-      ddsdde(4,4)=G
+      
 
       ddsdde(1,1)=ddsdde(1,1)+(km+four/three*Gm)*
      1  taui/dtime*(one-exp(-(dtime/taui)))
